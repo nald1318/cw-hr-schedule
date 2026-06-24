@@ -95,11 +95,40 @@
     }
 
     @media(max-width:380px){
-      :root{--time-w:35px;--slot-h:17px;--head-h:34px}
+      :root{--time-w:28px;--slot-h:16px;--head-h:30px}
       .tab{font-size:11px}
-      .head{font-size:10px}
-      .event .title{font-size:8px}
+      .head{font-size:8px}
+      .event .title{font-size:7px}
+      .time.hour{font-size:7px}
+    }
+
+
+    /* iPhone 15 Pro width tuning: force the whole WEEK grid into one screen */
+    @media(max-width:430px){
+      :root{--time-w:30px;--slot-h:17px;--head-h:32px}
+      html,body{width:100%;max-width:100%;overflow-x:hidden}
+      .wrap{padding-left:6px;padding-right:6px;overflow-x:hidden}
+      .schedulePanel,.scheduleBox,.grid,.weekbar,.tabs{min-width:0;max-width:100%}
+      .weekbar .actions{grid-template-columns:repeat(3,minmax(0,1fr));gap:4px}
+      .btn.small{font-size:10px;padding:7px 2px;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+      .grid.week{grid-template-columns:var(--time-w) repeat(6,minmax(0,1fr))!important}
+      .head{font-size:9px;min-width:0;white-space:normal;letter-spacing:-.4px;padding:0 1px}
+      .splitHead>div:first-child{white-space:nowrap;overflow:hidden;text-overflow:clip;width:100%}
+      .splitHead .lanes{font-size:7px}
+      .time{font-size:7px}
       .time.hour{font-size:8px}
+      .time.label30{font-size:7px}
+      .event{left:1px;right:1px;padding:2px 1px;border-radius:6px}
+      .event.split-HR{left:1px;right:calc(50% + 1px)}
+      .event.split-CW{left:calc(50% + 1px);right:1px}
+      .event .title{font-size:8px;line-height:1.05;letter-spacing:-.5px}
+      .daybtn{font-size:10px}
+    }
+      @media(max-width:380px){
+      :root{--time-w:28px;--slot-h:16px;--head-h:30px}
+      .head{font-size:8px}
+      .event .title{font-size:7px}
+      .time.hour{font-size:7px}
     }
   </style>
 </head>
@@ -243,9 +272,9 @@ function render(){
     const dateTxt=monthDayText(dayDate(d.k));
     const col=idx+2;
     if(childFilter){
-      html+=`<div class="head" style="grid-column:${col};grid-row:1">${d.n}요일 <span class="sub" style="margin-left:6px">${dateTxt}</span> · ${childFilter}</div>`;
+      html+=`<div class="head" style="grid-column:${col};grid-row:1">${d.n} <span class="sub" style="margin-left:2px">${dateTxt}</span> · ${childFilter}</div>`;
     }else{
-      html+=`<div class="head splitHead" style="grid-column:${col};grid-row:1"><div>${d.n}요일 <span class="sub" style="margin-left:6px">${dateTxt}</span></div><div class="lanes"><span>HR</span><span>CW</span></div></div>`;
+      html+=`<div class="head splitHead" style="grid-column:${col};grid-row:1"><div>${d.n} <span class="sub" style="margin-left:2px">${dateTxt}</span></div><div class="lanes"><span>HR</span><span>CW</span></div></div>`;
     }
   });
   let row=2;
