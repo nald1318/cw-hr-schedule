@@ -8,7 +8,7 @@
     :root{
       --bg:#f7f7fb; --card:#ffffff; --line:#e9e7ef; --strong-line:#d9d5e5;
       --text:#2b2b33; --muted:#777585; --sky:#bfe8ff; --pink:#ffd1dc;
-      --shadow:0 8px 24px rgba(31,31,48,.08); --slot-h:24px; --time-w:82px;
+      --shadow:0 8px 24px rgba(31,31,48,.08); --slot-h:24px; --time-w:82px; --head-h:42px;
     }
     *{box-sizing:border-box}
     body{margin:0;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--bg);color:var(--text)}
@@ -23,8 +23,8 @@
     .palette{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}.swatch{height:34px;border-radius:12px;border:2px solid transparent;cursor:pointer}.swatch.active{border-color:#393647;box-shadow:0 0 0 2px white inset}
     .legend{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.legend .chip{font-size:12px;padding:7px 10px}.weekbar{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:12px;flex-wrap:wrap}.weekbar strong{font-size:18px}.daySelect{display:flex;gap:6px;flex-wrap:wrap}.daybtn{border:1px solid var(--line);background:#fff;border-radius:999px;padding:8px 12px;cursor:pointer;font-weight:800;color:#5e5b6d}.daybtn.active{background:#393647;color:white}.scheduleBox{overflow:auto;border:1px solid var(--line);border-radius:18px;background:#fff;max-height:calc(100vh - 170px)}
     .grid{display:grid;min-width:1040px;position:relative}.grid.week{grid-template-columns:var(--time-w) repeat(6,1fr)}.grid.day{grid-template-columns:var(--time-w) minmax(520px,1fr)}
-    .head{position:sticky;top:0;z-index:6;height:42px;background:#fcfbff;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:center;font-weight:900}.timeHead{position:sticky;left:0;z-index:7;background:#fcfbff}
-    .time,.cell{height:var(--slot-h);border-bottom:1px solid var(--line)}
+    .head{position:sticky;top:0;z-index:6;min-height:var(--head-h);background:#fcfbff;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:center;font-weight:900}.timeHead{position:sticky;left:0;z-index:7;background:#fcfbff}
+    .time,.cell{height:var(--slot-h);min-height:var(--slot-h);border-bottom:1px solid var(--line)}
     .time{position:sticky;left:0;z-index:4;background:#fcfbff;color:#777585;font-size:11px;display:flex;align-items:flex-start;justify-content:center;padding-top:2px;border-right:1px solid var(--line)}
     .time.label30{font-weight:800;color:#5c5969}.time.hour{font-size:12px;font-weight:900;color:#393647}.time.hour,.cell.hour{border-top:2px solid var(--strong-line)}.time.half,.cell.half{border-top:1.5px solid var(--strong-line)}
     .cell{border-right:1px solid var(--line);position:relative;background:#fff}.cell:hover{background:#faf9ff}
@@ -35,7 +35,7 @@
 
     /* iPhone / mobile first tuning: no sideways cut-off, compact timetable */
     @media(max-width:600px){
-      :root{--time-w:38px;--slot-h:18px}
+      :root{--time-w:38px;--slot-h:18px;--head-h:34px}
       body{overflow-x:hidden;background:#fbfaff}
       .wrap{width:100%;max-width:100%;padding:10px}
       header{position:sticky;top:0}
@@ -64,14 +64,14 @@
       .legend{display:none}
       .weekbar{gap:8px;margin-bottom:8px}
       .weekbar strong{font-size:15px}
-      .weekbar .actions{width:100%;display:grid;grid-template-columns:repeat(4,1fr)}
+      .weekbar .actions{width:100%;display:grid;grid-template-columns:repeat(5,1fr)}
       .daySelect{width:100%;display:grid;grid-template-columns:repeat(6,1fr);gap:4px}
       .daybtn{padding:7px 0;font-size:11px}
       .scheduleBox{overflow-x:hidden;overflow-y:auto;border-radius:14px;max-height:64vh;width:100%}
       .grid{min-width:0!important;width:100%}
       .grid.week{grid-template-columns:var(--time-w) repeat(6,minmax(0,1fr))!important}
       .grid.day{grid-template-columns:var(--time-w) minmax(0,1fr)!important}
-      .head{height:34px;font-size:11px;padding:0 2px;text-align:center;line-height:1.15;overflow:hidden}
+      .head{min-height:var(--head-h);font-size:11px;padding:0 2px;text-align:center;line-height:1.15;overflow:hidden}
       .head .sub{display:none}
       .timeHead{font-size:10px}
       .splitHead{gap:0}
@@ -95,7 +95,7 @@
     }
 
     @media(max-width:380px){
-      :root{--time-w:35px;--slot-h:17px}
+      :root{--time-w:35px;--slot-h:17px;--head-h:34px}
       .tab{font-size:11px}
       .head{font-size:10px}
       .event .title{font-size:8px}
@@ -156,7 +156,7 @@
   <section class="panel schedulePanel" id="schedulePanel">
     <div class="weekbar">
       <div><strong id="rangeTitle"></strong><div class="sub">일정을 클릭하면 왼쪽에서 바로 수정할 수 있습니다.</div></div>
-      <div class="actions"><button class="btn small" id="addEventBtn">일정 추가</button><button class="btn secondary small" id="prevWeek">이전 주</button><button class="btn secondary small" id="thisWeek">이번 주</button><button class="btn secondary small" id="nextWeek">다음 주</button></div>
+      <div class="actions"><button class="btn small" id="addEventBtn">일정 추가</button><button class="btn secondary small" id="todayBtn">오늘</button><button class="btn secondary small" id="prevWeek">이전 주</button><button class="btn secondary small" id="thisWeek">이번 주</button><button class="btn secondary small" id="nextWeek">다음 주</button></div>
       <div class="daySelect" id="daySelect"></div>
     </div>
     <div class="scheduleBox"><div id="calendar" class="grid week"></div></div>
@@ -170,7 +170,6 @@ let events=JSON.parse(localStorage.getItem('kidsTimetableEvents')||'[]').map(e=>
 let view='week', selectedDay=1, selectedColor=colors[0], weekOffset=0;
 let settings=JSON.parse(localStorage.getItem('kidsTimetableSettings')||'{"vacationMode":false}');
 const $=id=>document.getElementById(id);
-const slotH=24;
 function pad(n){return String(n).padStart(2,'0')}
 function modeStart(){return settings.vacationMode?8*60:12*60}
 function modeEnd(){return 20*60}
@@ -179,10 +178,12 @@ function strToMinutes(s){const [h,m]=s.split(':').map(Number);return h*60+m}
 function getMonday(date=new Date()){const d=new Date(date);const day=d.getDay()||7;d.setDate(d.getDate()-day+1+weekOffset*7);d.setHours(0,0,0,0);return d}
 function dateKey(d){return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`}
 function dayDate(weekday){const mon=getMonday();const d=new Date(mon);d.setDate(mon.getDate()+weekday-1);return d}
+function monthDayText(date){return `${date.getMonth()+1}/${date.getDate()}`}
 function weeksBetween(a,b){const da=new Date(a+'T00:00:00'), db=new Date(b+'T00:00:00'); if(isNaN(da)||isNaN(db)) return 0; const diff=db-da; return Math.round(diff/(7*24*60*60*1000));}
 function saveLocal(){localStorage.setItem('kidsTimetableEvents',JSON.stringify(events));}
 function saveSettings(){localStorage.setItem('kidsTimetableSettings',JSON.stringify(settings));}
 function escapeHtml(s){return String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]))}
+function cssPxVar(name, fallback){const v=getComputedStyle(document.documentElement).getPropertyValue(name).trim(); const n=parseFloat(v); return Number.isFinite(n)?n:fallback;}
 function initStatic(){
   $('weekday').innerHTML=days.map(d=>`<option value="${d.k}">${d.n}요일</option>`).join('');
   $('palette').innerHTML=colors.map((c,i)=>`<button type="button" class="swatch ${i===0?'active':''}" style="background:${c}" data-color="${c}" title="${c}"></button>`).join('');
@@ -230,30 +231,46 @@ function render(){
   const cal=$('calendar');
   const childFilter=(view==='CW'||view==='HR')?view:null;
   const scheduleView=(view==='day')?'day':'week';
-  cal.className=`grid ${scheduleView}`; cal.innerHTML='';
+  cal.className=`grid ${scheduleView}`;
   const showDays=view==='day'?days.filter(d=>d.k===selectedDay):days;
   const slotCount=(modeEnd()-modeStart())/10;
-  cal.style.gridTemplateRows=`42px repeat(${slotCount}, var(--slot-h))`;
-  cal.innerHTML+=`<div class="head timeHead">시간</div>`+showDays.map(d=>{
-    const dateTxt=dateKey(dayDate(d.k)).slice(5);
+  cal.style.gridTemplateRows=`var(--head-h) repeat(${slotCount}, var(--slot-h))`;
+
+  // 중요: CSS Grid의 자동 배치에 맡기면 모바일/PC 전환 시 시간 라벨과 줄이 어긋날 수 있으므로
+  // 모든 시간 라벨과 셀에 grid-row/grid-column을 명시해서 같은 10분 행을 공유하게 만든다.
+  let html=`<div class="head timeHead" style="grid-column:1;grid-row:1">시간</div>`;
+  showDays.forEach((d,idx)=>{
+    const dateTxt=monthDayText(dayDate(d.k));
+    const col=idx+2;
     if(childFilter){
-      return `<div class="head">${d.n}요일 <span class="sub" style="margin-left:6px">${dateTxt}</span> · ${childFilter}</div>`;
+      html+=`<div class="head" style="grid-column:${col};grid-row:1">${d.n}요일 <span class="sub" style="margin-left:6px">${dateTxt}</span> · ${childFilter}</div>`;
+    }else{
+      html+=`<div class="head splitHead" style="grid-column:${col};grid-row:1"><div>${d.n}요일 <span class="sub" style="margin-left:6px">${dateTxt}</span></div><div class="lanes"><span>HR</span><span>CW</span></div></div>`;
     }
-    return `<div class="head splitHead"><div>${d.n}요일 <span class="sub" style="margin-left:6px">${dateTxt}</span></div><div class="lanes"><span>HR</span><span>CW</span></div></div>`;
-  }).join('');
-  for(let m=modeStart();m<modeEnd();m+=10){
+  });
+  let row=2;
+  for(let m=modeStart();m<modeEnd();m+=10,row++){
     const cls=timeLabelClass(m);
-    cal.innerHTML+=`<div class="time ${cls}">${timeLabelText(m)}</div>`;
-    for(const d of showDays) cal.innerHTML+=`<div class="cell ${cls}" data-day="${d.k}" data-time="${minutesToStr(m)}"></div>`;
+    html+=`<div class="time ${cls}" style="grid-column:1;grid-row:${row}">${timeLabelText(m)}</div>`;
+    showDays.forEach((d,idx)=>{
+      const col=idx+2;
+      html+=`<div class="cell ${cls}" style="grid-column:${col};grid-row:${row}" data-day="${d.k}" data-time="${minutesToStr(m)}"></div>`;
+    });
   }
+  cal.innerHTML=html;
+
+  const actualSlotH=cssPxVar('--slot-h',24);
   showDays.forEach((d,idx)=>{
     const col=document.createElement('div'); col.className='daycol';
-    col.style.gridColumn=(idx+2); col.style.gridRow=`2 / span ${slotCount}`; col.style.position='relative'; col.style.pointerEvents='none';
+    col.style.gridColumn=String(idx+2);
+    col.style.gridRow=`2 / ${slotCount+2}`;
+    col.style.height=`calc(var(--slot-h) * ${slotCount})`;
+    col.style.position='relative'; col.style.pointerEvents='none';
     let dayEvents=visibleEvents(d.k);
     if(childFilter) dayEvents=dayEvents.filter(e=>e.child===childFilter);
     dayEvents.forEach(e=>{
       const start=Math.max(strToMinutes(e.start),modeStart()), end=Math.min(strToMinutes(e.end),modeEnd());
-      const top=((start-modeStart())/10)*slotH+2; const h=Math.max(((end-start)/10)*slotH-4,22);
+      const top=((start-modeStart())/10)*actualSlotH+2; const h=Math.max(((end-start)/10)*actualSlotH-4,22);
       const div=document.createElement('div'); div.className='event';
       if(!childFilter) div.classList.add(e.child==='HR'?'split-HR':'split-CW');
       div.style.top=top+'px'; div.style.height=h+'px'; div.style.background=e.color; div.dataset.id=e.id;
@@ -348,7 +365,7 @@ function setupNotifications(){
 }
 document.querySelectorAll('.tab').forEach(t=>t.onclick=()=>{view=t.dataset.view; if(view==='CW'||view==='HR'){$('child').value=view; if(!$('eventId').value){selectedColor=view==='CW'?colors[0]:colors[1];document.querySelectorAll('.swatch').forEach(b=>b.classList.toggle('active',b.dataset.color===selectedColor));}} render();});
 $('saveBtn').onclick=saveEvent; $('resetBtn').onclick=()=>{resetForm();openForm();}; $('closeBtn').onclick=closeForm; $('deleteBtn').onclick=deleteEvent; $('addEventBtn').onclick=()=>{resetForm();openForm();};
-$('prevWeek').onclick=()=>{weekOffset--;render()}; $('nextWeek').onclick=()=>{weekOffset++;render()}; $('thisWeek').onclick=()=>{weekOffset=0;render()};
+$('prevWeek').onclick=()=>{weekOffset--;render()}; $('nextWeek').onclick=()=>{weekOffset++;render()}; $('thisWeek').onclick=()=>{weekOffset=0;render()}; $('todayBtn').onclick=()=>{const wd=new Date().getDay()||7; selectedDay=(wd>=1&&wd<=6)?wd:1; weekOffset=0; view='day'; render();};
 $('alarm').onchange=()=>{toggleAlarmPanel(); if($('alarm').checked && 'Notification' in window && Notification.permission==='default') Notification.requestPermission().then(setupNotifications)};
 $('alarmType').onchange=toggleAlarmPanel;
 $('child').onchange=()=>{if(!$('eventId').value){selectedColor=$('child').value==='CW'?colors[0]:colors[1];document.querySelectorAll('.swatch').forEach(b=>b.classList.toggle('active',b.dataset.color===selectedColor));}}
